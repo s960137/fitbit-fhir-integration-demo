@@ -29,6 +29,46 @@ Browser demo
     └─ FHIR R4 Bundle export
 ```
 
+## Project walkthrough
+
+以下畫面依照專案展示順序，串起 Fitbit Inspire 2 配對與同步、院所表單成果、開發工具及 Fitbit 授權頁面的完整脈絡。所有公開畫面皆已去識別化；數值、帳號與患者資料僅作為操作示意。
+
+### 1. Fitbit Inspire 2 配對與同步
+
+<p align="center">
+  <img src="docs/readme/fitbit-inspire-2-app-anonymized.png" alt="Fitbit Inspire 2 paired with the Fitbit mobile app" width="360">
+</p>
+
+先以 Fitbit 手機應用程式配對 Fitbit Inspire 2，並讓手環將步數、距離、熱量、心率等活動紀錄同步至 Fitbit 雲端。此畫面用來確認裝置與 App 已完成同步；公開版已移除個人頭像與活動數值。
+
+### 2. 取得資料並呈現在院所表單
+
+<p align="center">
+  <img src="docs/readme/clinical-form-result-redacted.png" alt="Redacted clinical form populated with Fitbit profile data" width="900">
+</p>
+
+取得使用者授權後，程式透過 Fitbit Web API 讀取 profile、心率與活動紀錄，再把姓名、性別、生日、身高、體重、時區與語系等欄位整理至院所格式的網頁。接著可將基本資料與量測值映射為 FHIR R4 `Patient` 與 `Observation` resources。圖中的黑色區塊是刻意遮蔽的個人資料；這是格式與傳輸流程原型，不是正式醫院病歷系統。
+
+### 3. 使用的工具
+
+<p align="center">
+  <img src="docs/readme/required-tools.png" alt="Postman, Visual Studio Code, and Fitbit mobile app" width="900">
+</p>
+
+- **Fitbit 手機應用程式**：配對手環、同步裝置與查看活動紀錄。
+- **Postman**：測試 OAuth Token、API endpoint、request headers 與 Fitbit 回傳的 JSON。
+- **Visual Studio Code**：編輯 HTML、CSS、JavaScript 與 FHIR JSON；也可使用其他程式碼編輯器。
+
+### 4. Fitbit OAuth 授權許可
+
+<p align="center">
+  <img src="docs/readme/fitbit-oauth-consent-anonymized.png" alt="Anonymized Fitbit OAuth consent screen" width="520">
+</p>
+
+程式要讀取 Fitbit 帳戶資料前，使用者必須在 Fitbit 授權頁面確認 App 要求的權限，例如 activity、heart rate、profile、weight 與 sleep。按下 **Allow** 後，Fitbit 才會依 OAuth 2.0 流程將授權結果導回已註冊的 Redirect URL；應用程式只能存取使用者同意的範圍。
+
+此圖保留了早期實作中的非 HTTPS 警告，僅用來呈現當時的練習流程。正式環境必須使用 HTTPS、精確設定 Redirect URL、只要求必要權限，並以 PKCE 或受保護的 backend 完成授權流程；Client Secret、Token 與真實帳號不可放在前端或 GitHub。
+
 ## Run locally
 
 瀏覽器若直接開啟本機檔案，部分功能可能受安全政策限制。建議在專案目錄啟動簡單的靜態伺服器：
