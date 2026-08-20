@@ -1,19 +1,19 @@
-# Fitbit × FHIR 資料整合示範專案
+# Fitbit × FHIR 資料整合Demo
 
-這是我過去發表的 Fitbit Inspire 2 資料整合專案之公開整理版。專案示範如何透過 Fitbit 網頁 API 取得個人資料、心率與活動紀錄，填入院所介面的對應欄位，並將基本資料與生命徵象轉成 HL7 FHIR R4 `Patient`／`Observation` 資源。
+這是Fitbit Inspire 2 資料整合整理。示範如何透過 Fitbit 網頁 API 取得個人資料、心率與活動紀錄，填入院所介面的對應欄位，並將基本資料與生命徵象轉成 HL7 FHIR R4 `Patient`／`Observation` 資源。
 
-> 這是教學與研究原型，不是正式醫療系統，也不應用於臨床判斷。
+> 這是教學材料，非正式醫療系統，也不應用於臨床判斷。
 
 ![專案概覽](docs/slides/fitbit-project-title.png)
 
-## 專案展示內容
+## 專案內容
 
 - Fitbit 網頁 API 與 OAuth 2.0 的基本概念
-- 個人資料、心率時間序列與活動紀錄 API 端點
+- 個人資料、心率時間序列與活動紀錄 API 
 - 將 Fitbit 個人資料顯示於院所表單欄位
 - 將身高、體重與心率對應成 FHIR R4 `Bundle`
-- 以模擬資料在沒有存取權杖的情況下展示完整流程
-- 不把用戶端密鑰、存取權杖或個人健康資料寫入 Git
+- 以模擬資料在沒有存取token的情況下展示流程
+- 不把用戶端密鑰、存取token或個人健康資料寫入 Git
 
 ## 系統架構
 
@@ -31,7 +31,7 @@ Fitbit 網頁 API
 
 ## 專案操作說明
 
-以下畫面依照專案展示順序，串起 Fitbit Inspire 2 配對與同步、院所表單成果、開發工具及 Fitbit 授權頁面的完整脈絡。所有公開畫面皆已去識別化；數值、帳號與患者資料僅作為操作示意。
+以下畫面為 Fitbit Inspire 2 配對與同步、院所表單成果、開發工具及 Fitbit 授權頁面脈絡。所有畫面都去識別化；數值、帳號與患者資料僅作示意。
 
 ### 1. Fitbit Inspire 2 配對與同步
 
@@ -39,17 +39,17 @@ Fitbit 網頁 API
   <img src="docs/readme/fitbit-inspire-2-app-anonymized.png" alt="Fitbit Inspire 2 與 Fitbit 手機應用程式完成配對" width="360">
 </p>
 
-先以 Fitbit 手機應用程式配對 Fitbit Inspire 2，並讓手環將步數、距離、熱量、心率等活動紀錄同步至 Fitbit 雲端。此畫面用來確認裝置與應用程式已完成同步；公開版已移除個人頭像與活動數值。
+先以 Fitbit 手機應用程式配對 Fitbit Inspire 2，並讓手環將步數、距離、熱量、心率等活動紀錄同步至 Fitbit 雲端。此畫面用來確認裝置與應用程式已完成同步。
 
-### 2. 取得資料並呈現在院所表單
+### 2. 取得資料呈現院所表單
 
 <p align="center">
   <img src="docs/readme/clinical-form-result-redacted.png" alt="填入 Fitbit 個人資料且已遮蔽敏感欄位的院所表單" width="900">
 </p>
 
-取得使用者授權後，程式透過 Fitbit 網頁 API 讀取個人資料、心率與活動紀錄，再把姓名、性別、生日、身高、體重、時區與語系等欄位整理至院所格式的網頁。接著可將基本資料與量測值對應為 FHIR R4 `Patient` 與 `Observation` 資源。圖中的黑色區塊是刻意遮蔽的個人資料；這是格式與傳輸流程原型，不是正式醫院病歷系統。
+取得授權後，程式透過 Fitbit 網頁 API 讀取個人資料、心率與活動紀錄，再把姓名、性別、生日、身高、體重、時區與語系等欄位整理至院所格式的網頁。接著可將基本資料與量測值對應為 FHIR R4 `Patient` 與 `Observation` 資源。圖中的黑色區塊是刻意遮蔽的資料；這是格式與傳輸流程原型，非正式醫院系統。
 
-### 3. 使用的工具
+### 3. 使用工具
 
 <p align="center">
   <img src="docs/readme/required-tools.png" alt="Postman、Visual Studio Code 與 Fitbit 手機應用程式" width="900">
@@ -65,9 +65,10 @@ Fitbit 網頁 API
   <img src="docs/readme/fitbit-oauth-consent-anonymized.png" alt="已匿名化的 Fitbit OAuth 授權同意畫面" width="520">
 </p>
 
-程式要讀取 Fitbit 帳戶資料前，使用者必須在 Fitbit 授權頁面確認應用程式要求的權限，例如活動、心率、個人資料、體重與睡眠。按下 **Allow（允許）** 後，Fitbit 才會依 OAuth 2.0 流程將授權結果導回已註冊的重新導向網址；應用程式只能存取使用者同意的範圍。
+程式要讀取 Fitbit 資料前，使用者必須在 Fitbit 授權頁面確認應用程式要求的權限，例如活動、心率、個人資料、體重與睡眠。按下 **Allow（允許）** 後，Fitbit 才會依 OAuth 2.0 流程將授權結果導回已註冊的重新導向網址；應用程式只能存取使用者同意的範圍。
 
-此圖保留了早期實作中的非 HTTPS 警告，僅用來呈現當時的練習流程。正式環境必須使用 HTTPS、精確設定重新導向網址、只要求必要權限，並以 PKCE 或受保護的後端完成授權流程；用戶端密鑰、權杖與真實帳號不可放在前端或 GitHub。
+此圖保留早期實作中的非 HTTPS 警告，僅用來呈現當時的練習流程。
+正式環境必須使用 HTTPS、精確設定重新導向網址、只要求必要權限，並以 PKCE 或受保護的後端完成授權流程；用戶端密鑰、權杖與真實帳號不可放在前端或 GitHub。
 
 ## 本機執行
 
@@ -115,8 +116,6 @@ python -m http.server 8000
 - [精選簡報圖片](docs/slides)
 - [已去識別化的早期範例](legacy)
 
-原始簡報與設定文件含有過往的 OAuth 憑證及可識別個人身分的截圖，因此刻意不納入公開專案。此處僅將不含敏感資訊的部分頁面匯出為圖片。
-
 ## 安全注意事項
 
 - 絕對不要提交存取權杖、更新權杖、授權碼、用戶端密鑰、患者識別碼、出生日期或真實健康紀錄。
@@ -137,7 +136,7 @@ python -m http.server 8000
 
 ## 限制
 
-- OAuth 權杖交換流程刻意不放在瀏覽器展示頁中。
+- OAuth 權杖交換流程不放在瀏覽器展示中。
 - 本專案未實作特定醫院的 FHIR 規範或正式環境驗證機制。
 - Fitbit API 權限與端點可用性取決於註冊的應用程式及使用者同意範圍。
-- 實際部署必須符合適用的隱私、安全與醫療器材相關規範。
+- 實際部署必須符合適用的隱私、安全與醫療相關規範。
