@@ -1,0 +1,18 @@
+OAuth 2.0 Client ID: <client_id>
+Client Secret: <client_secret>
+Redirect URL: http://localhost
+Authorization URI: https://www.fitbit.com/oauth2/authorize
+Access/Refresh Token URI: https://api.fitbit.com/oauth2/token
+
+Token request body:
+code=<authorization_code>
+grant_type=authorization_code
+redirect_uri=http://localhost
+
+Headers:
+Authorization: Basic <base64(client_id:client_secret)>
+Content-Type: application/x-www-form-urlencoded
+
+Profile request:
+GET https://api.fitbit.com/1/user/-/profile.json
+Authorization: Bearer <access_token>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fitbit × FHIR 資料整合示範</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Fitbit Web API / OAuth 2.0 / HL7 FHIR</p>
+      <h1>穿戴式資料整合至院所表單</h1>
+      <p class="subtitle">將 Fitbit 個人資料、心率與活動紀錄整理成可檢視的院所欄位，並輸出 FHIR R4 Bundle。</p>
+    </div>
+    <span class="project-badge">Research prototype</span>
+  </header>
+
+  <main>
+    <section class="panel controls" aria-labelledby="data-source-title">
+      <div>
+        <h2 id="data-source-title">資料來源</h2>
+        <p>預設使用去識別的展示資料。若要呼叫 Fitbit API，請只在本次瀏覽器工作階段輸入 Access Token。</p>
+      </div>
+      <div class="control-grid">
+        <label>
+          模式
+          <select id="dataMode">
+            <option value="demo">展示資料</option>
+            <option value="fitbit">Fitbit API</option>
+          </select>
+        </label>
+        <label>
+          Fitbit Access Token
+          <input id="accessToken" type="password" autocomplete="off" placeholder="不會儲存在程式碼或 localStorage">
+        </label>
+        <button id="loadProfile" type="button">載入個人資料</button>
+      </div>
+      <p id="status" class="status" role="status">展示資料已就緒。</p>
+    </section>
+
+    <section class="panel" aria-labelledby="clinical-form-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Clinical form preview</p>
+          <h2 id="clinical-form-title">院所資料欄位</h2>
+        </div>
+        <span class="privacy-note">僅供技術練習，不作臨床判斷</span>
+      </div>
+
+      <div class="form-section">
+        <h3>患者基本資料</h3>
+        <dl class="patient-grid">
+          <div><dt>姓名</dt><dd id="displayName">—</dd></div>
+          <div><dt>性別</dt><dd id="gender">—</dd></div>
+          <div><dt>出生日期</dt><dd id="dateOfBirth">—</dd></div>
+          <div><dt>身高</dt><dd id="height">—</dd></div>
+          <div><dt>體重</dt><dd id="weight">—</dd></div>
+          <div><dt>地區</dt><dd id="timezone">—</dd></div>
+          <div><dt>語系</dt><dd id="locale">—</dd></div>
+          <div><dt>Fitbit User ID</dt><dd id="fitbitUserId">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="form-section">
+        <div class="section-heading compact">
+          <h3>量測與活動紀錄</h3>
+          <div class="date-fields">
+            <label>開始日期 <input id="startDate" type="date"></label>
+            <label>結束日期 <input id="endDate" type="date"></label>
+          </div>
+        </div>
+        <div class="button-row">
+          <button id="loadHeart" type="button">取得心率</button>
+          <button id="loadActivity" type="button" class="secondary">取得活動紀錄</button>
+        </div>
+        <pre id="rawData" tabindex="0">尚未載入量測資料。</pre>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="fhir-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">HL7 FHIR R4</p>
+          <h2 id="fhir-title">FHIR Bundle</h2>
+        </div>
+        <div class="button-row">
+          <button id="buildFhir" type="button">產生 Bundle</button>
+          <button id="downloadFhir" type="button" class="secondary" disabled>下載 JSON</button>
+        </div>
+      </div>
+      <pre id="fhirOutput" tabindex="0">按下「產生 Bundle」以建立 Patient 與 Observation resources。</pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>此專案為教學與研究原型。請勿將 Client Secret、Access Token、病歷或可識別健康資料提交至版本控制。</p>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
