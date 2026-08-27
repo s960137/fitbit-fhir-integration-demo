@@ -4,6 +4,12 @@
 
 > 這是教學材料，非正式醫療系統，也不應用於臨床判斷。
 
+## 線上展示
+
+**[開啟 GitHub Pages 線上展示](https://s960137.github.io/fitbit-fhir-integration-demo/)**
+
+線上版本預設使用去識別化的模擬資料，不需要 Fitbit 存取權杖即可操作。可依序載入個人資料、取得心率與活動紀錄、產生 FHIR R4 `Bundle`，並下載產生的 JSON。若切換至 Fitbit API 模式，存取權杖只會暫存在目前瀏覽器工作階段，不會寫入程式碼或版本控制。
+
 ![專案概覽](docs/slides/fitbit-project-title.png)
 
 ## 專案內容
