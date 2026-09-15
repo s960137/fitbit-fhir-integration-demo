@@ -146,3 +146,9 @@ python -m http.server 8000
 - 本專案未實作特定醫院的 FHIR 規範或正式環境驗證機制。
 - Fitbit API 權限與端點可用性取決於註冊的應用程式及使用者同意範圍。
 - 實際部署必須符合適用的隱私、安全與醫療相關規範。
+
+--Author
+
+徐良慶 (Jasper Hsu)
+
+中原大學 生物醫學工程所 (Dept. of Biomedical Engineering, CYCU) | T&T 803 Lab
